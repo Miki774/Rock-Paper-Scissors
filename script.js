@@ -42,50 +42,83 @@ function playRound(playerSelection, computerSelection){
     }
 }
 
-function game(){
-    let playerSelection, computerPlay1, again="Yes";
-    while(again=="Yes" || again=="yes"){
-        for(let i=0;i<5;i++){
-            if(i==0){
-                playerSelection = prompt("Hello! Welcome to my Rock Paper Scissors game. What do you want to play?");
-            }
-            else if(i==1){
-                playerSelection = prompt("Hello again! This is yours second try. What do you want to play?");
-            }
-            else if(i==2){
-                playerSelection = prompt("Hello again! This is yours third try. What do you want to play?");
-            }
-            else if(i==3){
-                playerSelection = prompt("Hello again! This is yours fourth try. What do you want to play?");
-            }
-            else if(i==4){
-                playerSelection = prompt("Hello again! This is yours fifth and last try. What do you want to play?");
-            }
-            if(playerSelection == undefined || playerSelection == null || playerSelection == 0){
-                console.log("Please choose Rock, Paper or Scissors!");
-                break;
-            }
-            playerSelection = playerSelection[0].toUpperCase() + playerSelection.slice(1).toLowerCase();
-            computerPlay1 = computerPlay();
-            console.log(playerSelection + " vs " + computerPlay1);
-            console.log(playRound(playerSelection, computerPlay1) + "\nYou: " + w + "\nComputer: " + l);
-        }
-        if(w>l){
-            console.log("Congrats, you are the WINNER!\n\nYour score is:\n" + w + " wins\n" + l + " loses\n" + t + " tied");
-        }
-        else if(w==l){
-            console.log("It is tied!\n\nYour score is:\n" + w + " wins\n" + l + " loses\n" + t + " tied");
-        }
-        else{
-            console.log("Unlucky, you are the LOSER!\n\nYour score is:\n" + w + " wins\n" + l + " loses\n" + t + " tied");
-        }
-        again = prompt("Do you want to play again?");
-        w=0;
-        l=0;
-        t=0;
-    }
-}
-
 let w=0, l=0, t=0;
-
-console.log(game());
+const buttons = document.querySelectorAll('input');
+let p1 = document.querySelector('.para1');
+let p2 = document.querySelector('.para2');
+let p3 = document.querySelector('.para3');
+const playAgain = document.createElement('button');
+const container = document.querySelector('.container');
+const h1 = document.querySelector('h1');
+const h2 = document.querySelector('h2');
+const playAgainp = document.createElement('p');
+const audio = document.querySelector('.stefan');
+const igzo = document.querySelector('.igzo')
+const miki = document.querySelector('.miki');
+const bgmusic = document.querySelector('.bgmusic');
+igzo.volume = 0.5;
+bgmusic.volume = 0.3;
+miki.volume = 0.2;
+playAgain.classList.add('playAgain');
+playAgainp.classList.add('playAgainp')
+playAgainp.textContent = 'Play Again?';
+buttons.forEach(button =>{
+    button.addEventListener('click', function(){
+        bgmusic.play();
+        bgmusic.loop == true;
+        h2.remove();
+        h1.remove();
+        p1.textContent = playRound(button.value, computerPlay());
+        p2.textContent = "You: " + w + " Computer: " + l;
+        if(w==5){
+            p3.textContent = "Congrats, you are the WINNER!\n\nYour score is:\n" + w + " wins\n" + l + " loses\n" + t + " tied";
+            playAgain.style.display = "";
+            playAgainp.style.display = "";
+            w=0;
+            l=0;
+            t=0;
+            buttons.forEach(button =>{
+                button.disabled = true;
+            })
+            container.appendChild(playAgain);
+            container.appendChild(playAgainp);
+            playAgain.addEventListener('click', function(){
+                buttons.forEach(button =>{
+                    button.disabled = false;
+                    p1.textContent = "";
+                    p2.textContent = "";
+                    p3.textContent = "";
+                    playAgain.style.display = "none";
+                    playAgainp.style.display = "none";
+                    igzo.play();
+                })
+            })
+            miki.play();
+        }
+        else if(l==5){
+            p3.textContent = "Unlucky, you are the LOSER!\n\nYour score is:\n" + w + " wins\n" + l + " loses\n" + t + " tied";
+            playAgain.style.display = "";
+            playAgainp.style.display = "";
+            w=0;
+            l=0;
+            t=0;
+            buttons.forEach(button =>{
+                button.disabled = true;
+            })
+            container.appendChild(playAgain);
+            container.appendChild(playAgainp);
+            playAgain.addEventListener('click', function(){
+                buttons.forEach(button =>{
+                    button.disabled = false;
+                    p1.textContent = "";
+                    p2.textContent = "";
+                    p3.textContent = "";
+                    playAgain.style.display = "none";
+                    playAgainp.style.display = "none";
+                    igzo.play();
+                })
+            })
+            audio.play();
+        }
+    })
+})
